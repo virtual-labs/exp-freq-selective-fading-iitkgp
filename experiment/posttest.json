@@ -2,114 +2,114 @@
   {
 	  "version": 2.0,
   "questions": [
-    {
-    "question": "1. If the distance from the transmitter is doubled, and the pathloss exponent is two (like in free space), by how much does the received signal power decrease?",
+   {
+    "question": "1. What is the fundamental cause of 'delay spread'?",
     "answers": {
-      "a": "It decreases by half.",
-      "b": "It decreases by a factor of four.",
-      "c": "It doubles.",
-      "d": "It does not change."
-    },
-    "correctAnswer": "b",
-    "difficulty": "medium"
-  },
-  {
-    "question": "2. When comparing two signals, one at a very high carrier frequency and one at a very low carrier frequency, which one will experience more pathloss over the same distance in free space?",
-    "answers": {
-      "a": "The low-frequency signal.",
-      "b": "The high-frequency signal.",
-      "c": "Both will experience the same pathloss.",
-      "d": "It depends on the transmitter power."
-    },
-    "correctAnswer": "b",
-    "difficulty": "medium"
-  },
-  {
-    "question": "3. What is the main purpose of raising the transmitter antenna height on a cellular tower?",
-    "answers": {
-      "a": "To decrease the carrier frequency.",
-      "b": "To reduce interference from other towers.",
-      "c": "To increase the signal's range by clearing obstacles.",
-      "d": "To reduce the transmitter power required."
-    },
-    "correctAnswer": "c",
-    "difficulty": "beginner"
-  },
-  {
-    "question": "4. If you are in a building and your cell phone's received signal strength is weak, what is the most likely reason related to pathloss?",
-    "answers": {
-      "a": "The transmitter power of the base station is too low.",
-      "b": "The carrier frequency is too low.",
-      "c": "The pathloss exponent is very high due to walls and obstructions.",
-      "d": "The transmitter antenna is too high."
-    },
-    "correctAnswer": "c",
-    "difficulty": "medium"
-  },
-  {
-    "question": "5. Which of these factors does *not* directly influence the pathloss calculation, but rather the *final* received signal strength?",
-    "answers": {
-      "a": "Carrier frequency.",
-      "b": "Transmitter antenna height.",
-      "c": "Distance of separation.",
-      "d": "Transmitter power."
-    },
-    "correctAnswer": "d",
-    "difficulty": "medium"
-  },
-  {
-    "question": "6. A pathloss exponent of 4 is measured in a certain environment. What does this high value suggest?",
-    "answers": {
-      "a": "A clear, unobstructed line-of-sight path.",
-      "b": "A signal that is being guided, like in a tunnel.",
-      "c": "A very lossy environment with many reflections and obstructions.",
-      "d": "An environment where signal strength increases with distance."
-    },
-    "correctAnswer": "c",
-    "difficulty": "beginner"
-  },
-  {
-    "question": "7. How does increasing the receiver antenna height, for example, by moving your phone from your pocket to your ear, typically affect the received signal?",
-    "answers": {
-      "a": "It has no effect.",
-      "b": "It significantly increases the pathloss.",
-      "c": "It can slightly improve the signal by reducing local obstructions.",
-      "d": "It changes the carrier frequency."
-    },
-    "correctAnswer": "c",
-    "difficulty": "beginner"
-  },
-  {
-    "question": "8. To calculate the received signal strength, you need the transmitter power and the pathloss. How are they combined?",
-    "answers": {
-      "a": "Transmitter power is added to the pathloss.",
-      "b": "Pathloss is subtracted from the transmitter power.",
-      "c": "Transmitter power is multiplied by the pathloss.",
-      "d": "Transmitter power is divided by the pathloss."
-    },
-    "correctAnswer": "b",
-    "difficulty": "medium"
-  },
-  {
-    "question": "9. A pathloss prediction formula is used primarily to...",
-    "answers": {
-      "a": "Choose the brand of the transmitter.",
-      "b": "Estimate the coverage area and plan a wireless network.",
-      "c": "Calculate the data speed of the connection.",
-      "d": "Determine the physical size of the receiver antenna."
+      "a": "The transmitter sending the signal too slowly.",
+      "b": "The signal taking multiple paths of different lengths to the receiver.",
+      "c": "The receiver moving at a very high speed.",
+      "d": "Interference from other, adjacent frequency channels."
     },
     "correctAnswer": "b",
     "difficulty": "beginner"
   },
   {
-    "question": "10. In a real-world city environment, the measured pathloss is almost always...?",
+    "question": "2. How does increasing the data rate of a signal (which shortens the symbol period) affect its vulnerability to delay spread?",
     "answers": {
-      "a": "Greater than the pathloss predicted by the free-space model.",
-      "b": "Less than the pathloss predicted by the free-space model.",
-      "c": "Exactly equal to the pathloss predicted by the free-space model.",
-      "d": "Zero."
+      "a": "It makes the signal less vulnerable to intersymbol interference.",
+      "b": "It makes the signal more vulnerable to intersymbol interference.",
+      "c": "It has no effect on the signal's vulnerability.",
+      "d": "It changes the fading from frequency selective to flat."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "3. Which environment is most likely to cause a large delay spread and thus frequency selective fading?",
+    "answers": {
+      "a": "An open, flat desert with a clear line of sight.",
+      "b": "A dense urban city with many tall buildings.",
+      "c": "Over a calm ocean.",
+      "d": "A small, indoor room with no furniture."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "4. What is a common receiver technique used specifically to combat intersymbol interference caused by frequency selective fading?",
+    "answers": {
+      "a": "Using a high-power amplifier.",
+      "b": "Using an equalizer.",
+      "c": "Using a simple low-noise amplifier.",
+      "d": "Using selection combining."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "5. A channel's frequency response is *not flat* over the signal's bandwidth. What type of fading is this?",
+    "answers": {
+      "a": "Flat fading",
+      "b": "Frequency selective fading",
+      "c": "Fast fading",
+      "d": "Slow fading"
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "6. A large delay spread is inversely proportional to what channel characteristic?",
+    "answers": {
+      "a": "The coherence bandwidth.",
+      "b": "The path loss.",
+      "c": "The signal strength.",
+      "d": "The Doppler shift."
     },
     "correctAnswer": "a",
+    "difficulty": "medium"
+  },
+  {
+    "question": "7. What is 'Intersymbol Interference' (ISI)?",
+    "answers": {
+      "a": "When two different users interfere with each other.",
+      "b": "When the signal's frequency is changed by the channel.",
+      "c": "When the delayed copies of one symbol overlap with and distort the next symbol.",
+      "d": "When the signal is too weak to be detected."
+    },
+    "correctAnswer": "c",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "8. To avoid frequency selective fading, a signal's bandwidth should ideally be...",
+    "answers": {
+      "a": "much larger than the coherence bandwidth.",
+      "b": "much smaller than the coherence bandwidth.",
+      "c": "exactly equal to the coherence bandwidth.",
+      "d": "much larger than the delay spread."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "9. Frequency selective fading is a phenomenon observed in which domain?",
+    "answers": {
+      "a": "The time domain only.",
+      "b": "The frequency domain.",
+      "c": "The power domain only.",
+      "d": "The spatial domain only."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "10. What type of signal is most affected by frequency selective fading?",
+    "answers": {
+      "a": "A narrowband signal.",
+      "b": "A wideband signal.",
+      "c": "A signal with a very low data rate.",
+      "d": "A signal that is not moving."
+    },
+    "correctAnswer": "b",
     "difficulty": "medium"
   }
 

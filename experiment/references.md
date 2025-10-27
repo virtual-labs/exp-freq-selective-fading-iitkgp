@@ -4,6 +4,9 @@
 
 2) Gordon L. Stuber, 'Principles of Mobile Communications', 2nd Edition, Gordon L. Stuber, Georgia Institute of Technology, Atlanta, Georgia, USA, Kluwer Academic Publishers.
 
+3) Report ITU-R, M.2135 - 'Guidelines for evaluation of radio interface technologies for IMTadvanced'.
+   
+4) M. Paetzold, Mobile Fading Channels, 1st ed. John Wiley and Sons, 2002.
 #### Video Lectures
-- [NPTEL](http://nptel.ac.in/courses/117102062/10)
+- [NPTEL](http://nptel.ac.in/courses/117102062/19)
 

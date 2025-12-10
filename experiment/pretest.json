@@ -1,39 +1,116 @@
-{
-  "version": 2.0,
+  {
+	  "version": 2.0,
   "questions": [
     {
-      "question": "This is a Sample Question 1?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
+    "question": "1. What is the key characteristic of 'frequency selective fading'?",
+    "answers": {
+      "a": "All frequency components of the signal fade in the exact same way.",
+      "b": "Different frequency components of the signal experience different amounts of fading.",
+      "c": "The signal's amplitude increases uniformly across all frequencies.",
+      "d": "The fading only affects the phase, not the amplitude, of the signal."
     },
-    {
-      "question": "This is a Sample Question 2?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    }
+    "correctAnswer": "b",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "2. What does 'delay spread' measure in a wireless channel?",
+    "answers": {
+      "a": "The time it takes for a signal to leave the transmitter.",
+      "b": "The difference in arrival time between the first and last multipath components.",
+      "c": "The speed at which the receiver is moving.",
+      "d": "The total time duration of a single data bit."
+    },
+    "correctAnswer": "b",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "3. Frequency selective fading occurs when the signal's bandwidth is...",
+    "answers": {
+      "a": "smaller than the channel's coherence bandwidth.",
+      "b": "larger than the channel's coherence bandwidth.",
+      "c": "exactly equal to the channel's coherence bandwidth.",
+      "d": "not related to the channel's coherence bandwidth."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "4. What is the 'coherence bandwidth' of a channel?",
+    "answers": {
+      "a": "The total bandwidth allocated to the service provider.",
+      "b": "The range of frequencies that experience similar or correlated fading.",
+      "c": "The speed at which the signal frequencies change.",
+      "d": "The bandwidth that is completely free of any interference."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "5. A large delay spread in a channel will result in...",
+    "answers": {
+      "a": "a very large coherence bandwidth.",
+      "b": "a very small coherence bandwidth.",
+      "c": "no coherence bandwidth.",
+      "d": "no fading."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "6. What is the primary negative consequence of frequency selective fading?",
+    "answers": {
+      "a": "The signal's power becomes too high for the receiver.",
+      "b": "The signal arrives at the receiver too quickly.",
+      "c": "It causes intersymbol interference (ISI), where symbols overlap.",
+      "d": "It causes all frequencies to be lost permanently."
+    },
+    "correctAnswer": "c",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "7. If a channel has a very small delay spread (much smaller than the symbol period), what type of fading will the signal likely experience?",
+    "answers": {
+      "a": "Frequency selective fading",
+      "b": "Flat fading",
+      "c": "Fast fading",
+      "d": "Doppler fading"
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "8. Intersymbol interference (ISI) is a major problem when...",
+    "answers": {
+      "a": "the delay spread is very small compared to the symbol period.",
+      "b": "the delay spread is large and comparable to or greater than the symbol period.",
+      "c": "the signal bandwidth is very narrow.",
+      "d": "the channel experiences flat fading."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "9. How is the coherence bandwidth of a channel related to the delay spread?",
+    "answers": {
+      "a": "They are directly proportional.",
+      "b": "They are inversely proportional.",
+      "c": "They are not related in any way.",
+      "d": "They are equal to each other."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "10. A signal is considered to experience flat fading if its bandwidth is...",
+    "answers": {
+      "a": "much larger than the coherence bandwidth.",
+      "b": "much smaller than the coherence bandwidth.",
+      "c": "equal to the delay spread.",
+      "d": "larger than the symbol period."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  }
+
   ]
 }

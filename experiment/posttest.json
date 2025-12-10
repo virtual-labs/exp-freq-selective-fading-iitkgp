@@ -1,39 +1,117 @@
-{
-  "version": 2.0,
+
+  {
+	  "version": 2.0,
   "questions": [
-    {
-      "question": "This is a Sample Question 1?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "a",
-      "difficulty": "beginner"
+   {
+    "question": "1. What is the fundamental cause of 'delay spread'?",
+    "answers": {
+      "a": "The transmitter sending the signal too slowly.",
+      "b": "The signal taking multiple paths of different lengths to the receiver.",
+      "c": "The receiver moving at a very high speed.",
+      "d": "Interference from other, adjacent frequency channels."
     },
-    {
-      "question": "This is a Sample Question 2?",
-      "answers": {
-        "a": "answer1",
-        "b": "answer2",
-        "c": "answer3",
-        "d": "answer4"
-      },
-      "explanations": {
-        "a": "Explanation 1  <a href='www.google.com'>here</a>",
-        "b": "Explanation 2",
-        "c": "Explanation 2",
-        "d": "Explanation 2"
-      },
-      "correctAnswer": "c",
-      "difficulty": "beginner"
-    }
+    "correctAnswer": "b",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "2. How does increasing the data rate of a signal (which shortens the symbol period) affect its vulnerability to delay spread?",
+    "answers": {
+      "a": "It makes the signal less vulnerable to intersymbol interference.",
+      "b": "It makes the signal more vulnerable to intersymbol interference.",
+      "c": "It has no effect on the signal's vulnerability.",
+      "d": "It changes the fading from frequency selective to flat."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "3. Which environment is most likely to cause a large delay spread and thus frequency selective fading?",
+    "answers": {
+      "a": "An open, flat desert with a clear line of sight.",
+      "b": "A dense urban city with many tall buildings.",
+      "c": "Over a calm ocean.",
+      "d": "A small, indoor room with no furniture."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "4. What is a common receiver technique used specifically to combat intersymbol interference caused by frequency selective fading?",
+    "answers": {
+      "a": "Using a high-power amplifier.",
+      "b": "Using an equalizer.",
+      "c": "Using a simple low-noise amplifier.",
+      "d": "Using selection combining."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "5. A channel's frequency response is *not flat* over the signal's bandwidth. What type of fading is this?",
+    "answers": {
+      "a": "Flat fading",
+      "b": "Frequency selective fading",
+      "c": "Fast fading",
+      "d": "Slow fading"
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "6. A large delay spread is inversely proportional to what channel characteristic?",
+    "answers": {
+      "a": "The coherence bandwidth.",
+      "b": "The path loss.",
+      "c": "The signal strength.",
+      "d": "The Doppler shift."
+    },
+    "correctAnswer": "a",
+    "difficulty": "medium"
+  },
+  {
+    "question": "7. What is 'Intersymbol Interference' (ISI)?",
+    "answers": {
+      "a": "When two different users interfere with each other.",
+      "b": "When the signal's frequency is changed by the channel.",
+      "c": "When the delayed copies of one symbol overlap with and distort the next symbol.",
+      "d": "When the signal is too weak to be detected."
+    },
+    "correctAnswer": "c",
+    "difficulty": "beginner"
+  },
+  {
+    "question": "8. To avoid frequency selective fading, a signal's bandwidth should ideally be...",
+    "answers": {
+      "a": "much larger than the coherence bandwidth.",
+      "b": "much smaller than the coherence bandwidth.",
+      "c": "exactly equal to the coherence bandwidth.",
+      "d": "much larger than the delay spread."
+    },
+    "correctAnswer": "b",
+    "difficulty": "advanced"
+  },
+  {
+    "question": "9. Frequency selective fading is a phenomenon observed in which domain?",
+    "answers": {
+      "a": "The time domain only.",
+      "b": "The frequency domain.",
+      "c": "The power domain only.",
+      "d": "The spatial domain only."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  },
+  {
+    "question": "10. What type of signal is most affected by frequency selective fading?",
+    "answers": {
+      "a": "A narrowband signal.",
+      "b": "A wideband signal.",
+      "c": "A signal with a very low data rate.",
+      "d": "A signal that is not moving."
+    },
+    "correctAnswer": "b",
+    "difficulty": "medium"
+  }
+
   ]
 }

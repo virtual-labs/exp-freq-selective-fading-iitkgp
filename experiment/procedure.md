@@ -13,24 +13,26 @@ Follow the instructions given below to perform the experiments:-
     <div align="center">
     <img src="images/instruction2.png" alt="Large Scale Fading">  
       </div>
+      
 * Step3:- Select PDP and clicked each tab to see the graphs.
+  
   <div align="center">
     <img src="images/instruction3.png" alt="Large Scale Fading">  
       </div>
 
-* Step3:- Click on "RESET" button and enter the values of the parameter given here,then click on the "SUBMIT' button.
+* Step4:- Calculate and eenter the values of the parameters ,then click on the "SUBMIT' button.
 
    <div align="center">
     <img src="images/instruction4.png" alt="Large Scale Fading">  
       </div>
 
-* step4:- To generate the Pdf report click on the "REPORT' button.
+* step5:- Change the PDP and repeat the above process and enter all the values for different PDP/ environments.
 
    <div align="center">
     <img src="images/instruction5.png" alt="Large Scale Fading">  
       </div>
 
-* step5:- Enter your file name then Click on the "Save" button.
+* step6:- To generate the Pdf report click on the "REPORT' button.
 
    <div align="center">
     <img src="images/instruction6.png" alt="Large Scale Fading">  

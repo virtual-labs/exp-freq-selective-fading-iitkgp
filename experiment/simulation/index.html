@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frequency Selective Fading Simulator</title>
-    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js for plotting graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- jsPDF and autoTable plugin for report generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 
@@ -43,11 +40,58 @@
             border-radius: 0.5rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-        .tab-button.active {
-            border-color: #3b82f6;
+
+        /* --- UPDATED TAB STYLES --- */
+        .tab-button {
+            border-width: 2px;
+            border-bottom-width: 0;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Tab 1: Magnitude (Blue Theme) */
+        #tabMag {
+            border-color: #3b82f6; /* Blue-500 */
+            color: #3b82f6;
+            background-color: #eff6ff; /* Blue-50 */
+        }
+        #tabMag:hover {
+            background-color: #dbeafe; /* Blue-100 */
+        }
+        #tabMag.active {
             background-color: #3b82f6;
             color: white;
         }
+
+        /* Tab 2: Real + Img (Green/Emerald Theme) */
+        #tabRealImg {
+            border-color: #10b981; /* Emerald-500 */
+            color: #10b981;
+            background-color: #ecfdf5; /* Emerald-50 */
+        }
+        #tabRealImg:hover {
+            background-color: #d1fae5; /* Emerald-100 */
+        }
+        #tabRealImg.active {
+            background-color: #10b981;
+            color: white;
+        }
+
+        /* Tab 3: Power Delay Profile (Violet/Purple Theme) */
+        #tabPdp {
+            border-color: #8b5cf6; /* Violet-500 */
+            color: #8b5cf6;
+            background-color: #f5f3ff; /* Violet-50 */
+        }
+        #tabPdp:hover {
+            background-color: #ede9fe; /* Violet-100 */
+        }
+        #tabPdp.active {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        /* -------------------------- */
+
         input:disabled {
             background-color: #e5e7eb;
             cursor: not-allowed;
@@ -60,7 +104,6 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <!-- Modal for Name Input -->
     <div id="nameModal" class="modal-overlay">
         <div class="modal-content text-center">
             <h2 class="text-2xl font-bold mb-4">Welcome!</h2>
@@ -70,30 +113,27 @@
         </div>
     </div>
 
-    <!-- Main Container -->
     <div id="mainContent" class="container mx-auto p-4 md:p-8 hidden">
         <header class="text-center mb-8">
-            
-            <!-- ADDED: User name display -->
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Fading Channels and Mobile Communication</h1>
+            <h2 class="text-xl md:text-2xl text-gray-500">Experiment: Frequency Selective Fading</h2>
             <h3 id="userNameDisplay" class="text-lg text-gray-600 mt-2"></h3>
         </header>
 
         <div class="bg-white rounded-2xl shadow-xl p-4 md:p-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                <!-- Graph Section -->
                 <div class="lg:col-span-2 p-4 rounded-lg bg-gray-50">
-                    <div class="flex border-b mb-4">
-                        <button id="tabMag" class="tab-button active flex-1 py-2 px-4 rounded-t-lg -mb-px border border-b-0">Channel Impulse Response (Magnitude)</button>
-                        <button id="tabRealImg" class="tab-button flex-1 py-2 px-4 rounded-t-lg">Channel Impulse Response (Real+Img)</button>
-                        <button id="tabPdp" class="tab-button flex-1 py-2 px-4 rounded-t-lg">Power Delay Profile</button>
+                    <div class="flex border-b-2 border-gray-200 mb-4 gap-1">
+                        <button id="tabMag" class="tab-button active flex-1 py-3 px-4 rounded-t-lg">Channel Impulse Response (Magnitude)</button>
+                        <button id="tabRealImg" class="tab-button flex-1 py-3 px-4 rounded-t-lg">Channel Impulse Response (Real+Img)</button>
+                        <button id="tabPdp" class="tab-button flex-1 py-3 px-4 rounded-t-lg">Power Delay Profile</button>
                     </div>
                     <div>
                         <canvas id="chartCanvas" height="200"></canvas>
                     </div>
                 </div>
 
-                <!-- Controls Section -->
                 <div class="p-4 rounded-lg bg-gray-50 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center justify-between mb-4">
@@ -149,7 +189,6 @@
                 </div>
             </div>
 
-            <!-- Results Table -->
             <div id="resultsSection" class="mt-8 overflow-x-auto">
                 <h3 class="text-2xl font-bold mb-4 text-center">Results</h3>
                 <table id="resultsTable" class="w-full text-sm text-left text-gray-500">
@@ -164,8 +203,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Rows will be dynamically inserted here -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
@@ -207,10 +245,9 @@
             let chartInstance;
             let userName = '';
             let currentTab = 'mag';
-            // --- MODIFIED: Set to track submitted environments ---
             let submittedEnvironments = new Set();
 
-            // --- Data for Environments (Greatly expanded to >= 25 points per environment) ---
+            // --- Data for Environments ---
             const environmentData = {
                 'UMi(LoS)': {
                     taps: Array.from({ length: 26 }, (_, i) => {
@@ -295,7 +332,7 @@
                 },
             };
 
-            // --- Calculation Functions (based on Theory.pdf) ---
+            // --- Calculation Functions ---
             function calculateParameters(taps) {
                 if (!taps || taps.length === 0) return { meDelay: 0, rmsDelay: 0, bc05: 0, bc09: 0, maxTow: 0 };
                 let totalPower = 0, weightedDelaySum = 0, weightedDelaySquaredSum = 0, maxTow = 0;
@@ -384,7 +421,6 @@
                 Object.values(outputs).forEach(output => output.innerText = '');
                 initializeTable();
                 updateChart();
-                // --- MODIFIED: Reset submitted environments and disable report button ---
                 submittedEnvironments.clear();
                 reportButton.disabled = true;
             }
@@ -422,7 +458,6 @@
                 
                 Object.values(inputs).forEach(input => input.disabled = true);
 
-                // --- MODIFIED: Track submission and enable report button if all are done ---
                 submittedEnvironments.add(selectedEnv);
                 const totalEnvironments = Object.keys(environmentData).length;
                 if (submittedEnvironments.size === totalEnvironments) {

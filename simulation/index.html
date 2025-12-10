@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequency Selective Fading Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+
+    <style>
+        /* Custom styles for a better look and feel */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* --- UPDATED TAB STYLES --- */
+        .tab-button {
+            border-width: 2px;
+            border-bottom-width: 0;
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Tab 1: Magnitude (Blue Theme) */
+        #tabMag {
+            border-color: #3b82f6; /* Blue-500 */
+            color: #3b82f6;
+            background-color: #eff6ff; /* Blue-50 */
+        }
+        #tabMag:hover {
+            background-color: #dbeafe; /* Blue-100 */
+        }
+        #tabMag.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* Tab 2: Real + Img (Green/Emerald Theme) */
+        #tabRealImg {
+            border-color: #10b981; /* Emerald-500 */
+            color: #10b981;
+            background-color: #ecfdf5; /* Emerald-50 */
+        }
+        #tabRealImg:hover {
+            background-color: #d1fae5; /* Emerald-100 */
+        }
+        #tabRealImg.active {
+            background-color: #10b981;
+            color: white;
+        }
+
+        /* Tab 3: Power Delay Profile (Violet/Purple Theme) */
+        #tabPdp {
+            border-color: #8b5cf6; /* Violet-500 */
+            color: #8b5cf6;
+            background-color: #f5f3ff; /* Violet-50 */
+        }
+        #tabPdp:hover {
+            background-color: #ede9fe; /* Violet-100 */
+        }
+        #tabPdp.active {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        /* -------------------------- */
+
+        input:disabled {
+            background-color: #e5e7eb;
+            cursor: not-allowed;
+        }
+        button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="nameModal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <h2 class="text-2xl font-bold mb-4">Welcome!</h2>
+            <p class="mb-4">What is your name?</p>
+            <input type="text" id="userNameInput" class="border rounded-lg px-4 py-2 w-full mb-4" placeholder="Enter your name">
+            <button id="startSimButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg">OK</button>
+        </div>
+    </div>
+
+    <div id="mainContent" class="container mx-auto p-4 md:p-8 hidden">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Fading Channels and Mobile Communication</h1>
+            <h2 class="text-xl md:text-2xl text-gray-500">Experiment: Frequency Selective Fading</h2>
+            <h3 id="userNameDisplay" class="text-lg text-gray-600 mt-2"></h3>
+        </header>
+
+        <div class="bg-white rounded-2xl shadow-xl p-4 md:p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <div class="lg:col-span-2 p-4 rounded-lg bg-gray-50">
+                    <div class="flex border-b-2 border-gray-200 mb-4 gap-1">
+                        <button id="tabMag" class="tab-button active flex-1 py-3 px-4 rounded-t-lg">Channel Impulse Response (Magnitude)</button>
+                        <button id="tabRealImg" class="tab-button flex-1 py-3 px-4 rounded-t-lg">Channel Impulse Response (Real+Img)</button>
+                        <button id="tabPdp" class="tab-button flex-1 py-3 px-4 rounded-t-lg">Power Delay Profile</button>
+                    </div>
+                    <div>
+                        <canvas id="chartCanvas" height="200"></canvas>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-lg bg-gray-50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <label for="pdpSelect" class="font-semibold">PDP:</label>
+                            <select id="pdpSelect" class="border rounded-lg px-3 py-2 w-2/3">
+                                <option value="UMi(LoS)">UMi(LoS)</option>
+                                <option value="UMi(NLoS)">UMi(NLoS)</option>
+                                <option value="UMa(LoS)">UMa(LoS)</option>
+                                <option value="UMa(NLoS)">UMa(NLoS)</option>
+                                <option value="Rural Macro(LoS)">Rural Macro(LoS)</option>
+                                <option value="Rural Macro(NLoS)">Rural Macro(NLoS)</option>
+                                <option value="Suburban Macro(LoS)">Suburban Macro(LoS)</option>
+                                <option value="Suburban Macro(NLoS)">Suburban Macro(NLoS)</option>
+                                <option value="Suburban Macro(Outdoor-In)">Suburban Macro(Outdoor-In)</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-end mb-6">
+                            <button id="resetButton" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-6 rounded-lg">Reset</button>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-3 items-center gap-2">
+                                <label for="rmsDelayInput">RMSDelay(uS):</label>
+                                <input type="number" id="rmsDelayInput" class="border rounded-lg p-2 w-full" value="0">
+                                <span id="rmsDelayOutput" class="text-blue-600 font-semibold text-sm pl-2"></span>
+                            </div>
+                            <div class="grid grid-cols-3 items-center gap-2">
+                                <label for="meDelayInput">MEDelay(uS):</label>
+                                <input type="number" id="meDelayInput" class="border rounded-lg p-2 w-full" value="0">
+                                <span id="meDelayOutput" class="text-blue-600 font-semibold text-sm pl-2"></span>
+                            </div>
+                            <div class="grid grid-cols-3 items-center gap-2">
+                                <label for="bc05Input">Bc(&gt;0.5) MHz:</label>
+                                <input type="number" id="bc05Input" class="border rounded-lg p-2 w-full" value="0">
+                                <span id="bc05Output" class="text-blue-600 font-semibold text-sm pl-2"></span>
+                            </div>
+                            <div class="grid grid-cols-3 items-center gap-2">
+                                <label for="bc09Input">Bc(&gt;0.9) MHz:</label>
+                                <input type="number" id="bc09Input" class="border rounded-lg p-2 w-full" value="0">
+                                <span id="bc09Output" class="text-blue-600 font-semibold text-sm pl-2"></span>
+                            </div>
+                            <div class="grid grid-cols-3 items-center gap-2">
+                                <label for="maxTowInput">Max. Tow(uS):</label>
+                                <input type="number" id="maxTowInput" class="border rounded-lg p-2 w-full" value="0">
+                                <span id="maxTowOutput" class="text-blue-600 font-semibold text-sm pl-2"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-4 mt-6">
+                        <button id="submitButton" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg">Submit</button>
+                        <button id="reportButton" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg" disabled>Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resultsSection" class="mt-8 overflow-x-auto">
+                <h3 class="text-2xl font-bold mb-4 text-center">Results</h3>
+                <table id="resultsTable" class="w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Environment</th>
+                            <th scope="col" class="px-6 py-3">Mean Excess Delay(uS)</th>
+                            <th scope="col" class="px-6 py-3">RMS Delay(uS)</th>
+                            <th scope="col" class="px-6 py-3">Bc(&gt;0.5) MHz</th>
+                            <th scope="col" class="px-6 py-3">Bc(&gt;0.9) MHz</th>
+                            <th scope="col" class="px-6 py-3">Max. Tow(uS)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- DOM Element References ---
+            const nameModal = document.getElementById('nameModal');
+            const startSimButton = document.getElementById('startSimButton');
+            const userNameInput = document.getElementById('userNameInput');
+            const mainContent = document.getElementById('mainContent');
+            const pdpSelect = document.getElementById('pdpSelect');
+            const resetButton = document.getElementById('resetButton');
+            const submitButton = document.getElementById('submitButton');
+            const reportButton = document.getElementById('reportButton');
+            const resultsTableBody = document.querySelector('#resultsTable tbody');
+            const chartCanvas = document.getElementById('chartCanvas');
+            const tabs = {
+                mag: document.getElementById('tabMag'),
+                realImg: document.getElementById('tabRealImg'),
+                pdp: document.getElementById('tabPdp'),
+            };
+            const inputs = {
+                rmsDelay: document.getElementById('rmsDelayInput'),
+                meDelay: document.getElementById('meDelayInput'),
+                bc05: document.getElementById('bc05Input'),
+                bc09: document.getElementById('bc09Input'),
+                maxTow: document.getElementById('maxTowInput'),
+            };
+            const outputs = {
+                rmsDelay: document.getElementById('rmsDelayOutput'),
+                meDelay: document.getElementById('meDelayOutput'),
+                bc05: document.getElementById('bc05Output'),
+                bc09: document.getElementById('bc09Output'),
+                maxTow: document.getElementById('maxTowOutput'),
+            };
+
+            let chartInstance;
+            let userName = '';
+            let currentTab = 'mag';
+            let submittedEnvironments = new Set();
+
+            // --- Data for Environments ---
+            const environmentData = {
+                'UMi(LoS)': {
+                    taps: Array.from({ length: 26 }, (_, i) => {
+                        const tow = i * 0.01;
+                        const power = Math.exp(-tow / 0.05) * (1 - 0.5 * Math.sin(tow * 50));
+                        const real = Math.sqrt(power) * Math.cos(tow * 100);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 100) * (i % 2 === 0 ? 1 : -1);
+                        return { tow: tow, power: power, real: real, imag: imag };
+                    })
+                },
+                'UMi(NLoS)': {
+                    taps: Array.from({ length: 26 }, (_, i) => {
+                        const tow = 0.02 + i * 0.018;
+                        const power = (Math.exp(-tow / 0.1) + 0.5 * Math.exp(-(tow - 0.07) * (tow - 0.07) / 0.001));
+                        const real = Math.sqrt(power) * Math.cos(tow * 80 + i);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 80 + i);
+                        return { tow: tow, power: power > 1 ? 1 : power, real: real, imag: imag };
+                    })
+                },
+                'UMa(LoS)': {
+                    taps: Array.from({ length: 26 }, (_, i) => {
+                        const tow = i * 0.05;
+                        const power = Math.exp(-tow / 0.25) + (i === 4 ? 0.5 : 0);
+                        const real = Math.sqrt(power) * Math.cos(tow * 40);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 40);
+                        return { tow: tow, power: power, real: real, imag: imag };
+                    })
+                },
+                'UMa(NLoS)': {
+                    taps: Array.from({ length: 26 }, (_, i) => {
+                        const tow = 0.1 + i * 0.085;
+                        const power = (Math.exp(-(tow - 0.4) * (tow - 0.4) / 0.05) + 0.7 * Math.exp(-(tow - 0.9) * (tow - 0.9) / 0.1));
+                        const real = Math.sqrt(power) * Math.cos(tow * 30 + i * 0.5);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 30 + i * 0.5);
+                        return { tow: tow, power: power > 1 ? 1 : power, real: real, imag: imag };
+                    })
+                },
+                'Rural Macro(LoS)': {
+                    taps: Array.from({ length: 25 }, (_, i) => {
+                        const tow = i * 0.01;
+                        const power = (i === 0 ? 1.0 : 0.1 * Math.exp(-tow / 0.05));
+                        const real = Math.sqrt(power) * Math.cos(tow * 200);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 200);
+                        return { tow: tow, power: power, real: real, imag: imag };
+                    })
+                },
+                'Rural Macro(NLoS)': {
+                    taps: Array.from({ length: 25 }, (_, i) => {
+                        const tow = 0.2 + i * 0.03;
+                        const power = Math.exp(-(tow - 0.2) / 0.15);
+                        const real = Math.sqrt(power) * Math.cos(tow * 150 + i);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 150 + i);
+                        return { tow: tow, power: power, real: real, imag: imag };
+                    })
+                },
+                'Suburban Macro(LoS)': {
+                    taps: Array.from({ length: 25 }, (_, i) => {
+                        const tow = i * 0.03;
+                        const power = (i === 0 ? 1.0 : 0.4 * Math.exp(-tow / 0.2));
+                        const real = Math.sqrt(power) * Math.cos(tow * 90);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 90);
+                        return { tow: tow, power: power, real: real, imag: imag };
+                    })
+                },
+                'Suburban Macro(NLoS)': {
+                     taps: Array.from({ length: 25 }, (_, i) => {
+                        const tow = 0.2 + i * 0.045;
+                        const power = (Math.exp(-(tow-0.2)/0.3) + 0.5*Math.exp(-(tow-0.6)*(tow-0.6)/0.04));
+                        const real = Math.sqrt(power) * Math.cos(tow * 70 + i);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 70 + i);
+                        return { tow: tow, power: power > 1 ? 1 : power, real: real, imag: imag };
+                    })
+                },
+                'Suburban Macro(Outdoor-In)': {
+                    taps: Array.from({ length: 26 }, (_, i) => {
+                        const tow = 0.1 + i * 0.1;
+                        const power = (0.8 * Math.exp(-(tow-0.1)/0.5) + Math.exp(-(tow-0.8)*(tow-0.8)/0.06));
+                        const real = Math.sqrt(power) * Math.cos(tow * 50 + i*2);
+                        const imag = Math.sqrt(power) * Math.sin(tow * 50 + i*2);
+                        return { tow: tow, power: power > 1 ? 1 : power, real: real, imag: imag };
+                    })
+                },
+            };
+
+            // --- Calculation Functions ---
+            function calculateParameters(taps) {
+                if (!taps || taps.length === 0) return { meDelay: 0, rmsDelay: 0, bc05: 0, bc09: 0, maxTow: 0 };
+                let totalPower = 0, weightedDelaySum = 0, weightedDelaySquaredSum = 0, maxTow = 0;
+                taps.forEach(tap => {
+                    totalPower += tap.power;
+                    weightedDelaySum += tap.power * tap.tow;
+                    weightedDelaySquaredSum += tap.power * tap.tow * tap.tow;
+                    if (tap.tow > maxTow) maxTow = tap.tow;
+                });
+                if (totalPower === 0) return { meDelay: 0, rmsDelay: 0, bc05: Infinity, bc09: Infinity, maxTow: 0 };
+                const meDelay = weightedDelaySum / totalPower;
+                const meanSquareDelay = weightedDelaySquaredSum / totalPower;
+                
+                const variance = meanSquareDelay - (meDelay * meDelay);
+                const rmsDelay = Math.sqrt(variance < 0 ? 0 : variance);
+
+                const bc05 = rmsDelay > 0 ? (1 / (5 * rmsDelay)) : Infinity;
+                const bc09 = rmsDelay > 0 ? (1 / (50 * rmsDelay)) : Infinity;
+                return {
+                    meDelay: parseFloat(meDelay.toFixed(4)), rmsDelay: parseFloat(rmsDelay.toFixed(4)), bc05: parseFloat(bc05.toFixed(4)), bc09: parseFloat(bc09.toFixed(4)), maxTow: parseFloat(maxTow.toFixed(4)),
+                };
+            }
+
+            // --- Charting/Plotting Functions ---
+            function updateChart() {
+                const selectedEnv = pdpSelect.value;
+                const data = environmentData[selectedEnv];
+                if (!data) return;
+                const labels = data.taps.map(t => t.tow);
+                let datasets, title, yLabel;
+                switch (currentTab) {
+                    case 'mag':
+                        title = 'Channel Impulse Response (Mag)'; yLabel = 'h(dB)';
+                        datasets = [{
+                            label: selectedEnv, data: data.taps.map(t => 10 * Math.log10(t.power)), borderColor: '#3b82f6', backgroundColor: '#3b82f6', type: 'line', showLine: true, pointRadius: 2, borderWidth: 1.5,
+                        }];
+                        break;
+                    case 'realImg':
+                         title = 'Channel Impulse Response (Real+Imag)'; yLabel = 'Amplitude';
+                         datasets = [
+                            { label: 'Real Part', data: data.taps.map(t => ({ x: t.tow, y: t.real })), borderColor: '#10b981', backgroundColor: '#10b981', type: 'line', showLine: true, pointRadius: 2, fill: false, borderWidth: 1.5, },
+                            { label: 'Imaginary Part', data: data.taps.map(t => ({ x: t.tow, y: t.imag })), borderColor: '#ef4444', backgroundColor: '#ef4444', type: 'line', showLine: true, pointRadius: 2, fill: false, borderWidth: 1.5, }
+                         ];
+                         break;
+                    case 'pdp':
+                        title = 'Power Delay Profile'; yLabel = 'Power (linear)';
+                        datasets = [{
+                            label: selectedEnv, data: data.taps.map(t => ({ x: t.tow, y: t.power })), borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', type: 'line', showLine: true, pointRadius: 2, fill: false, borderWidth: 1.5,
+                        }];
+                        break;
+                }
+                if (chartInstance) chartInstance.destroy();
+                chartInstance = new Chart(chartCanvas, {
+                    type: 'line', data: { labels, datasets },
+                    options: {
+                        responsive: true, maintainAspectRatio: true,
+                        plugins: { title: { display: true, text: title, font: { size: 18 } } },
+                        scales: {
+                            x: { title: { display: true, text: 'tow(us)' }, type: 'linear' },
+                            y: { title: { display: true, text: yLabel } }
+                        }
+                    }
+                });
+            }
+
+            // --- UI and Event Handling ---
+            function initializeTable() {
+                resultsTableBody.innerHTML = '';
+                Object.keys(environmentData).forEach(envName => {
+                    const row = document.createElement('tr');
+                    row.id = `row-${envName.replace(/[^\w]/g, '')}`;
+                    row.className = 'bg-white border-b';
+                    row.innerHTML = `
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${envName}</th>
+                        <td class="px-6 py-4" data-col="meDelay"></td> <td class="px-6 py-4" data-col="rmsDelay"></td>
+                        <td class="px-6 py-4" data-col="bc05"></td> <td class="px-6 py-4" data-col="bc09"></td>
+                        <td class="px-6 py-4" data-col="maxTow"></td>
+                    `;
+                    resultsTableBody.appendChild(row);
+                });
+            }
+
+            function resetSimulation() {
+                Object.values(inputs).forEach(input => input.disabled = false);
+                Object.values(inputs).forEach(input => input.value = '0');
+                Object.values(outputs).forEach(output => output.innerText = '');
+                initializeTable();
+                updateChart();
+                submittedEnvironments.clear();
+                reportButton.disabled = true;
+            }
+
+            function handleSubmit() {
+                const selectedEnv = pdpSelect.value;
+                const data = environmentData[selectedEnv];
+                if (!data) return;
+
+                const actualValues = calculateParameters(data.taps);
+                const userValues = {
+                    meDelay: parseFloat(inputs.meDelay.value), rmsDelay: parseFloat(inputs.rmsDelay.value),
+                    bc05: parseFloat(inputs.bc05.value), bc09: parseFloat(inputs.bc09.value),
+                    maxTow: parseFloat(inputs.maxTow.value)
+                };
+
+                Object.keys(actualValues).forEach(key => {
+                    if (outputs[key]) {
+                        outputs[key].innerText = actualValues[key];
+                    }
+                });
+
+                const rowId = `row-${selectedEnv.replace(/[^\w]/g, '')}`;
+                const row = document.getElementById(rowId);
+                if (row) {
+                    Object.keys(actualValues).forEach(key => {
+                        const cell = row.querySelector(`[data-col="${key}"]`);
+                        const actual = actualValues[key];
+                        const entered = userValues[key];
+                        const isCorrect = Math.abs(actual - entered) < 0.01 * Math.abs(actual) || Math.abs(actual - entered) < 0.001;
+                        cell.innerHTML = `Actual: ${actual}<br>Entered: ${entered}`;
+                        cell.className = `px-6 py-4 ${isCorrect ? 'text-green-600' : 'text-red-600'}`;
+                    });
+                }
+                
+                Object.values(inputs).forEach(input => input.disabled = true);
+
+                submittedEnvironments.add(selectedEnv);
+                const totalEnvironments = Object.keys(environmentData).length;
+                if (submittedEnvironments.size === totalEnvironments) {
+                    reportButton.disabled = false;
+                }
+            }
+            
+            function generateReport() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                const now = new Date();
+                const dateStr = now.toLocaleDateString();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                doc.setFontSize(18); doc.text("Fading Channels & Mobile Communications", 105, 20, null, null, "center");
+                doc.setFontSize(14); doc.text("IIT Kharagpur", 105, 30, null, null, "center");
+                doc.setFontSize(12); doc.text(`Experiment 10: Frequency Selective Fading`, 105, 40, null, null, "center");
+                doc.text(`Name: ${userName}`, 20, 55); 
+                doc.text(`Date: ${dateStr} ${timeStr}`, 200, 55, { align: 'right' });
+                
+                doc.setFontSize(16); doc.text("Results", 105, 70, null, null, "center");
+                doc.autoTable({
+                    html: '#resultsTable', startY: 75, theme: 'grid', headStyles: { fillColor: [22, 160, 133] },
+                    didParseCell: function (data) {
+                        if (data.cell.raw && typeof data.cell.raw.innerHTML === 'string') {
+                            data.cell.text = data.cell.raw.innerHTML.replace(/<br\s*\/?>/ig, "\n");
+                        }
+                    }
+                });
+                doc.text(`(Signature of ${userName})`, 20, doc.autoTable.previous.finalY + 20);
+                doc.text("(Signature of Faculty)", 200, doc.autoTable.previous.finalY + 20, { align: 'right' });
+                doc.save(`${userName}_report.pdf`);
+                alert('Report generated and download started.');
+            }
+
+            function switchTab(tabName) {
+                currentTab = tabName;
+                Object.values(tabs).forEach(tab => tab.classList.remove('active'));
+                tabs[tabName].classList.add('active');
+                updateChart();
+            }
+
+            // --- Event Listeners ---
+            startSimButton.addEventListener('click', () => {
+                userName = userNameInput.value || 'Anonymous';
+                nameModal.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                document.getElementById('userNameDisplay').innerText = `Name of User: ${userName}`;
+                initializeSimulation();
+            });
+
+            pdpSelect.addEventListener('change', () => {
+                Object.values(inputs).forEach(input => input.disabled = false);
+                Object.values(inputs).forEach(input => input.value = '0');
+                Object.values(outputs).forEach(output => output.innerText = '');
+                updateChart();
+            });
+
+            resetButton.addEventListener('click', resetSimulation);
+            submitButton.addEventListener('click', handleSubmit);
+            reportButton.addEventListener('click', generateReport);
+            tabs.mag.addEventListener('click', () => switchTab('mag'));
+            tabs.realImg.addEventListener('click', () => switchTab('realImg'));
+            tabs.pdp.addEventListener('click', () => switchTab('pdp'));
+
+            // --- Initialization ---
+            function initializeSimulation() {
+                initializeTable();
+                updateChart();
+            }
+        });
+    </script>
+<script src="../assets/js/iframeResize.js"></script>
+        
+        </body>
+</html>

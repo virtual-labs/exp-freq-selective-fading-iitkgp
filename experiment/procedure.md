@@ -20,7 +20,7 @@ Follow the instructions given below to perform the experiments:-
     <img src="images/instruction3.png" alt="Large Scale Fading">  
       </div>
 
-* Step4:- Calculate and eenter the values of the parameters ,then click on the "SUBMIT' button.
+* Step4:- Calculate and enter the values of the parameters ,then click on the "SUBMIT' button.
 
    <div align="center">
     <img src="images/instruction4.png" alt="Large Scale Fading">  
@@ -33,21 +33,11 @@ Follow the instructions given below to perform the experiments:-
       </div>
 
 * step6:- To generate the Pdf report click on the "REPORT' button.
-
+  
+* Step7:-Click on the "Ok" and you will get your Report.
+  
    <div align="center">
     <img src="images/instruction6.png" alt="Large Scale Fading">  
-      </div>
-
-* Step6:- After generation of the Report you will get following message.
-
-   <div align="center">
-    <img src="images/instruction7.png" alt="Large Scale Fading">  
-      </div>
-
-* Step7:-Click on the "Ok" and you will get your Report.
-
-   <div align="center">
-    <img src="images/instruction8.png" alt="Large Scale Fading">  
       </div>
 
 * Step8:- To Redo the experiment click on "RESET" button.

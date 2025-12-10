@@ -2,7 +2,7 @@
 
 Follow the instructions given below to perform the experiments:-
 
-* Step1:- Click on the button START. A page appears with a dialogue box asking for your name.
+* Step1:- A page appears with a dialogue box asking for your name.
 
    <div align="center">
     <img src="images/instruction1.png" alt="Large Scale Fading">  
@@ -13,7 +13,7 @@ Follow the instructions given below to perform the experiments:-
     <div align="center">
     <img src="images/instruction2.png" alt="Large Scale Fading">  
       </div>
-
+* Step3:- Select PDP and clicked each tab to see the graphs.
   <div align="center">
     <img src="images/instruction3.png" alt="Large Scale Fading">  
       </div>
